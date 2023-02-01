@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '我的预约'
+  navigationBarTitleText: '个人中心'
 })

@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 // import "@nutui/nutui-taro/dist/style.css";
 import {
   Icon,
@@ -13,17 +14,23 @@ import {
   Cell,
   Swiper,
   SwiperItem,
+  Image,
+  NumberKeyboard,
+  Input,
+  RadioGroup,
+  Radio,
 } from "@nutui/nutui-taro";
 
 import "windi.css";
 import "./app.scss";
 
 const App = createApp({
-  onShow(options) {},
+  onShow() {},
   // 入口组件不需要实现 render 方法，即使实现了也会被 taro 所覆盖
 });
 
-App.use(Icon)
+App.use(createPinia())
+  .use(Icon)
   .use(Sticky)
   .use(Button)
   .use(List)
@@ -34,6 +41,11 @@ App.use(Icon)
   .use(OverLay)
   .use(Cell)
   .use(Swiper)
-  .use(SwiperItem);
+  .use(SwiperItem)
+  .use(Image)
+  .use(NumberKeyboard)
+  .use(Input)
+  .use(Radio)
+  .use(RadioGroup);
 
 export default App;

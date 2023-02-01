@@ -2,11 +2,9 @@
   <nut-list :height="80" :listData="props.list">
     <template v-slot="{ item }">
       <view
-        class="room-card p-2 shadow-warm-gray-200 shadow grid grid-cols-[auto,auto] grid-rows-2 gap-1 items-center"
+        class="order-card p-2 shadow-warm-gray-200 shadow grid grid-cols-[auto,auto] grid-rows-2 gap-1 items-center"
       >
-        <view
-          class="row-span-1 col-span-2 text-left text-xl font-bold text-primary"
-        >
+        <view class="row-span-1 col-span-2 text-left text-xl font-bold text-primary">
           {{ item.name }}
         </view>
         <view class="row-span-1 col-span-1 text-left text-gray-600">
@@ -24,8 +22,7 @@
           size="mini"
           type="primary"
           shape="square"
-          @tap="createOrder(item.id)"
-          >预约</nut-button
+          >预约1</nut-button
         >
       </view>
     </template>
@@ -34,21 +31,14 @@
 
 <script lang="ts" setup>
 import { addOrder } from "@/apis/order";
-import { formatToDate } from "@/utils/dateUtil";
 import Taro from "@tarojs/taro";
 import { ref, PropType } from "vue";
 
 const props = defineProps<{
   list: Array<singleRoom>;
-  morning: boolean;
-  date: string;
 }>();
-async function createOrder(roomId:number) {
-  await addOrder({
-    roomId,
-    morning: Number(props.morning),
-    date:formatToDate(props.date)
-  });
+async function createOrder() {
+  await addOrder();
   Taro.showToast({
     title: "预约成功",
     icon: "success",
@@ -58,7 +48,7 @@ async function createOrder(roomId:number) {
 </script>
 
 <style lang="scss">
-.room-card {
+.order-card {
   border: 1px solid rgba(168, 162, 158, 0.5);
   border-radius: 4px;
 }

@@ -20,6 +20,7 @@ import {
   RadioGroup,
   Radio,
 } from "@nutui/nutui-taro";
+import { IconFont } from '@nutui/icons-vue-taro';
 
 import "windi.css";
 import "./app.scss";
@@ -46,6 +47,6 @@ App.use(createPinia())
   .use(NumberKeyboard)
   .use(Input)
   .use(Radio)
-  .use(RadioGroup);
+  .use(RadioGroup).use(IconFont);
 
 export default App;

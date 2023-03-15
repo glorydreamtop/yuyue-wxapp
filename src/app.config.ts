@@ -1,5 +1,5 @@
 export default defineAppConfig({
-  pages: ["pages/mine/index","pages/index/index","pages/user/index","pages/admin/index"],
+  pages: ["pages/adminroomlist/index","pages/mine/index","pages/index/index","pages/user/index","pages/admin/index","pages/adminstudentlist/index","pages/adminarticlelist/index"],
   tabBar: {
     list: [
       {

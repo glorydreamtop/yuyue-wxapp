@@ -12,6 +12,14 @@ export async function getRoomList(data: {
   return list;
 }
 
+export async function getBuildingRoomList(data: { building: number }) {
+  const list = await defHttp.get<singleRoom[]>({
+    url: "/room/roomList",
+    data,
+  });
+  return list;
+}
+
 export async function getBuildingList() {
   const list = await defHttp.get<buildingInfo[]>({
     url: "/room/buildingList",

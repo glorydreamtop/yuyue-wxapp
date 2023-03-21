@@ -56,17 +56,38 @@
         :pane-key="building.id"
         class="room-list"
       >
-        <Room :list="roomListMaps[building.name]" :morning="isMorning" :date="currentDate" />
+        <nut-infiniteloading
+          v-if="roomListMaps[building.name]?.length > 0"
+          pull-icon="refresh"
+          container-id="refreshScroll"
+          :use-window="false"
+          :is-open-refresh="true"
+          @refresh="refresh"
+        >
+          <Room
+            :list="roomListMaps[building.name]"
+            :morning="isMorning"
+            :date="currentDate"
+            @refresh="refresh"
+          />
+        </nut-infiniteloading>
+        <view class="h-60 flex justify-center items-center" v-else>
+          <text>
+            点击刷新
+          </text>
+        </view>
       </nut-tabpane>
     </nut-tabs>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import Room from "@/components/roomCard/index.vue";
 import { formatToDate, today, daysAgo } from "@/utils/dateUtil";
 import { getRoomList, getBuildingList } from "@/apis/room";
+import { getCurrentInstance, eventCenter } from "@tarojs/taro";
+import { useMainStore } from "@/store";
 const swiperIndex = ref(0);
 const currentBuilding = ref(1);
 const buildings = ref<buildingInfo[]>([]);
@@ -91,7 +112,11 @@ function setDate(params: string[]) {
   currentDate.value = params[3];
 }
 
-onMounted(async () => {
+watch(currentDate, () => {
+  refresh();
+});
+
+async function refresh(done?: () => void) {
   buildings.value = await getBuildingList();
   buildings.value.forEach(async (b) => {
     const res = await getRoomList({
@@ -100,6 +125,15 @@ onMounted(async () => {
       morning: Number(isMorning.value),
     });
     roomListMaps[b.name] = res;
+  });
+  
+  if (done) done();
+}
+
+onMounted(async () => {
+  eventCenter.on(getCurrentInstance().router.onShow, async() => {
+    await refresh();
+    useMainStore().loginState = true;
   });
 });
 </script>

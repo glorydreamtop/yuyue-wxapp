@@ -10,6 +10,7 @@ interface userInfo {
   name: string;
   openid: string;
   age: number;
+  inuse: number;
 }
 
 interface buildingInfo {
@@ -25,4 +26,12 @@ interface singleOrder {
   inuse: number;
   morning: number;
   creatTime: string;
+}
+
+interface roomInfo {
+  id: number;
+  name: string;
+  amount: number;
+  building: number;
+  buildingName?: string;
 }

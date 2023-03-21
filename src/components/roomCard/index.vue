@@ -43,6 +43,7 @@ const props = defineProps<{
   morning: boolean;
   date: string;
 }>();
+const emit = defineEmits(["refresh"]);
 async function createOrder(roomId:number) {
   await addOrder({
     roomId,
@@ -54,6 +55,7 @@ async function createOrder(roomId:number) {
     icon: "success",
     duration: 2000,
   });
+  emit('refresh')
 }
 </script>
 

@@ -1,10 +1,17 @@
 import { defHttp } from "@/utils/http";
 
 export async function getUserInfoApi() {
-  const userInfo = await defHttp.get<userInfo>({
-    url: "/user/getUserInfo",
-  });
-  return userInfo;
+  try {
+    const userInfo = await defHttp.get<userInfo>({
+      url: "/user/getUserInfo",
+    });
+    console.log("u", userInfo);
+
+    return userInfo;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 export async function addUserInfoApi(userInfo: userInfo) {
@@ -38,4 +45,23 @@ export async function loginApi(code: string) {
     },
   });
   return token;
+}
+
+export async function getUserListApi() {
+  return defHttp.get<userInfo[]>({
+    url: "/user/list",
+  });
+}
+
+export async function delUserApi(data: Partial<userInfo>) {
+  return defHttp.post({
+    url: "/user/del",
+    data,
+  });
+}
+export async function banUserApi(data: Partial<userInfo>) {
+  return defHttp.post({
+    url: "/user/status",
+    data,
+  });
 }

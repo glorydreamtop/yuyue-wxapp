@@ -1,3 +1,4 @@
+import { useMainStore } from "@/store";
 import Taro from "@tarojs/taro";
 import { getAuthCache } from "./cache";
 
@@ -12,7 +13,7 @@ interface httpRes<T = any> {
 }
 
 // const baseURL = "http://localhost:5005";
-const baseURL = "http://basequota.cn:5005";
+const baseURL = "https://basequota.cn:5005";
 
 class VHttp {
   private baseURL: string;
@@ -47,6 +48,9 @@ class VHttp {
         } else {
           throw res.data.msg;
         }
+      }else if (res.statusCode === 401){
+        useMainStore().clearToken()
+        throw res.data.msg;
       } else {
         throw res.data.msg;
       }

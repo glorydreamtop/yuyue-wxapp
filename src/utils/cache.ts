@@ -10,6 +10,7 @@ export function getAuthCache(): string {
 
 export function clearAuthCache() {
   Taro.removeStorageSync("token");
+  Taro.removeStorageSync("userInfo");
 }
 
 export function setUserInfoCache(userInfo: userInfo) {

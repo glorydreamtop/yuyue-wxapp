@@ -1,3 +1,3 @@
 export default definePageConfig({
-  navigationBarTitleText: '教室列表'
+  navigationBarTitleText: '学生列表'
 })

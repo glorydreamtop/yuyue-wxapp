@@ -1,33 +1,57 @@
 <template>
-  <nut-tabs v-model="currentBuilding">
-    <nut-tabpane
-      v-for="building in buildings"
-      :title="building.name"
-      :pane-key="building.id"
-      class="room-list"
+  <view class="h-100vh overscroll-y-auto flex flex-col gap-4 relative">
+    <view
+      @tap="edit(a.id)"
+      v-for="a in articleList"
+      :key="a.id"
+      class="w-9/10 mx-auto rounded-md card"
     >
-      <view> </view>
-    </nut-tabpane>
-  </nut-tabs>
+      <img mode="widthFix" class="w-full" :src="a.pic" :alt="a.title" />
+      <view class="text-lg font-bold p-2">
+        {{ a.title }}
+      </view>
+    </view>
+    <view
+      @tap="add"
+      class="rounded-1 bg-primary w-20 h-20 right-8 bottom-8 absolute flex items-center justify-center"
+    >
+      <nut-icon size="40" color="#FFFFFF" name="plus"></nut-icon>
+    </view>
+  </view>
 </template>
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
-import { getBuildingRoomList, getBuildingList } from "@/apis/room";
+import { getArticleListApi } from "@/apis/article";
+import { getCurrentInstance, eventCenter, navigateTo } from "@tarojs/taro";
 
-const currentBuilding = ref(1);
-const buildings = ref<buildingInfo[]>([]);
-const roomListMaps = reactive<Record<string, singleRoom[]>>({});
-
+const articleList = ref<singleArticle[]>([]);
 onMounted(async () => {
-  buildings.value = await getBuildingList();
-  buildings.value.forEach(async (b) => {
-    const res = await getBuildingRoomList({
-      building: b.id,
-    });
-    roomListMaps[b.name] = res;
+  eventCenter.on(getCurrentInstance().router?.onShow, () => {
+    updateList();
   });
 });
+
+async function updateList() {
+  articleList.value = await getArticleListApi();
+}
+
+function add() {
+  navigateTo({
+    url: `/pages/adminarticleedit/index`,
+  });
+}
+
+function edit(id: number) {
+  navigateTo({
+    url: `/pages/adminarticleedit/index?id=${id}`,
+  });
+}
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.card {
+  border: 1px solid #ccc;
+  overflow: hidden;
+}
+</style>

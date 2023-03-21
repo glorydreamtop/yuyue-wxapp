@@ -2,10 +2,10 @@
   <view class="index">
     <nut-swiper :init-page="swiperIndex" :loop="false">
       <nut-swiper-item>
-        <img src="http://imgs.zixinco.com/20221207/e930d78e2c904.png" alt="" />
+        <img src="https://imgs.zixinco.com/20221207/e930d78e2c904.png" alt="" />
       </nut-swiper-item>
       <nut-swiper-item>
-        <img src="http://imgs.zixinco.com/20221207/99c9e53e089ac.png" alt="" />
+        <img src="https://imgs.zixinco.com/20221207/99c9e53e089ac.png" alt="" />
       </nut-swiper-item>
     </nut-swiper>
     <nut-cell>

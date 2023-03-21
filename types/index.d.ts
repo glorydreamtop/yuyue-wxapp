@@ -35,3 +35,10 @@ interface roomInfo {
   building: number;
   buildingName?: string;
 }
+
+interface singleArticle {
+  id: number;
+  title: string;
+  pic: string;
+  content: string;
+}

@@ -22,6 +22,8 @@ import {
   Radio,
   InfiniteLoading,
   Swipe,
+  Uploader,
+  TextArea,
 } from "@nutui/nutui-taro";
 
 import "windi.css";
@@ -58,6 +60,8 @@ App.use(createPinia())
   .use(RadioGroup)
   .use(InputNumber)
   .use(InfiniteLoading)
-  .use(Swipe);
+  .use(Swipe)
+  .use(Uploader)
+  .use(TextArea);
 
 export default App;

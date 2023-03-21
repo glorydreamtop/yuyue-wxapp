@@ -13,7 +13,7 @@ interface httpRes<T = any> {
 }
 
 // const baseURL = "http://localhost:5005";
-const baseURL = "https://basequota.cn:5005";
+export const baseURL = "https://basequota.cn:5005";
 
 class VHttp {
   private baseURL: string;

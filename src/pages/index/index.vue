@@ -29,16 +29,28 @@
     </nut-cell>
     <view class="cell-picker">
       <view
-        :class="['cell-btn', isMorning ? 'select' : '']"
-        @tap="changeisMorning(true)"
+        :class="['cell-btn', range === 1 ? 'select' : '']"
+        @tap="changeRange(1)"
       >
-        上午
+        7:30-9:30
       </view>
       <view
-        :class="['cell-btn', !isMorning ? 'select' : '']"
-        @tap="changeisMorning(false)"
+        :class="['cell-btn', range === 2 ? 'select' : '']"
+        @tap="changeRange(2)"
       >
-        下午
+        10:00-12:00
+      </view>
+      <view
+        :class="['cell-btn', range === 3 ? 'select' : '']"
+        @tap="changeRange(3)"
+      >
+        14:00-16:00
+      </view>
+      <view
+        :class="['cell-btn', range === 4 ? 'select' : '']"
+        @tap="changeRange(4)"
+      >
+        16:30-18:30
       </view>
     </view>
     <nut-calendar
@@ -66,7 +78,7 @@
         >
           <Room
             :list="roomListMaps[building.name]"
-            :morning="isMorning"
+            :range="range"
             :date="currentDate"
             @refresh="refresh"
           />
@@ -96,10 +108,12 @@ const calendarVisible = ref(false);
 const currentDate = ref(formatToDate());
 const dateRange = ref([today(), daysAgo(-14)]);
 
-// 是上午
-const isMorning = ref(true);
-function changeisMorning(val: boolean) {
-  isMorning.value = val;
+const range = ref(1);
+function changeRange(val: number) {
+  
+  
+  range.value = val;
+  console.log(range.value);
 }
 
 function openCalendar() {
@@ -112,8 +126,10 @@ function setDate(params: string[]) {
   currentDate.value = params[3];
 }
 
-watch(currentDate, () => {
+watch(()=>[currentDate,range], () => {
   refresh();
+},{
+  deep:true
 });
 
 async function refresh(done?: () => void) {
@@ -122,16 +138,16 @@ async function refresh(done?: () => void) {
     const res = await getRoomList({
       building: b.id,
       date: currentDate.value,
-      morning: Number(isMorning.value),
+      range: range.value,
     });
     roomListMaps[b.name] = res;
   });
-  
+
   if (done) done();
 }
 
 onMounted(async () => {
-  eventCenter.on(getCurrentInstance().router.onShow, async() => {
+  eventCenter.on(getCurrentInstance().router!.onShow, async () => {
     await refresh();
     useMainStore().loginState = true;
   });
@@ -151,7 +167,7 @@ onMounted(async () => {
 }
 
 .room-list {
-  height: calc(100vh - 260px);
+  height: calc(100vh - 330px);
 }
 
 .cell-picker {
@@ -159,8 +175,10 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 2%;
-  height: 40px;
+  flex-wrap: wrap;
+  gap: 8px;
+  height: auto;
+  padding: 4px;
   text-align: center;
   @apply bg-gray-200;
 }

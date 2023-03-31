@@ -24,7 +24,7 @@ interface singleOrder {
   date: string;
   roomId: number;
   inuse: number;
-  morning: number;
+  range: number;
   creatTime: string;
 }
 

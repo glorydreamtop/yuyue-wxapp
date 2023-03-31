@@ -17,7 +17,7 @@ export async function delRoom(data: { id: number }) {
 
 export async function getRoomDateList(data: {
   roomId: number;
-  morning: number;
+  range: number;
   startDate:string;
   endDate:string;
 }) {
@@ -32,7 +32,7 @@ export async function addRoomDateList(data: {
   roomId: number;
   startDate: string;
   endDate: string;
-  morning: number;
+  range: number;
 }) {
   const res = await defHttp.post<string>({
     url: "/room/createRoomDate",
@@ -44,7 +44,7 @@ export async function addRoomDateList(data: {
 export async function updateRoomDate(data: {
   roomId: number;
   date: string;
-  morning: number;
+  range: number;
   amount:number;
 }) {
   const res = await defHttp.post<string>({
@@ -57,7 +57,7 @@ export async function updateRoomDate(data: {
 export async function getRoomList(data: {
   building: number;
   date: string;
-  morning: number;
+  range: number;
 }) {
   const list = await defHttp.get<singleRoom[]>({
     url: "/room/availableRoomList",

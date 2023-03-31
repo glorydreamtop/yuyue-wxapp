@@ -1,10 +1,10 @@
 export default defineAppConfig({
   pages: [
+    // "pages/order/index",
     "pages/index/index",
     "pages/adminarticlelist/index",
     "pages/adminarticleedit/index",
     "pages/adminstudentlist/index",
-
     "pages/adminroomlist/index",
     "pages/adminroomdate/index",
     "pages/mine/index",

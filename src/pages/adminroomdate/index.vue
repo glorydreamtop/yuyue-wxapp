@@ -1,24 +1,36 @@
 <template>
-  <view class="h-full p-4">
-    <view class="text-xl">
+  <view class="h-full">
+    <view class="text-xl px-4 mt-4">
       <view class="text-primary text-2xl"> 房间：{{ roomInfo.name }} </view>
       <view> 所属教学楼：{{ roomInfo.buildingName }} </view>
     </view>
     <view class="cell-picker">
       <view
-        :class="['cell-btn', isMorning ? 'select' : '']"
-        @tap="changeisMorning(true)"
+        :class="['cell-btn', range === 1 ? 'select' : '']"
+        @tap="changeRange(1)"
       >
-        上午
+        7:30-9:30
       </view>
       <view
-        :class="['cell-btn', !isMorning ? 'select' : '']"
-        @tap="changeisMorning(false)"
+        :class="['cell-btn', range === 2 ? 'select' : '']"
+        @tap="changeRange(2)"
       >
-        下午
+        10:00-12:00
+      </view>
+      <view
+        :class="['cell-btn', range === 3 ? 'select' : '']"
+        @tap="changeRange(3)"
+      >
+        14:00-16:00
+      </view>
+      <view
+        :class="['cell-btn', range === 4 ? 'select' : '']"
+        @tap="changeRange(4)"
+      >
+        16:30-18:30
       </view>
     </view>
-    <view>
+    <view class="px-4 pb-4">
       <nut-calendar
         title="本房间可用日期"
         :poppable="false"
@@ -73,7 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted,watch } from "vue";
 import { showToast, getCurrentInstance,navigateBack } from "@tarojs/taro";
 import {
   getRoomInfo,
@@ -82,22 +94,24 @@ import {
   getRoomDateList,
   updateRoomDate,
 } from "@/apis/room";
-import { dateUtil, daysAgo, today } from "@/utils/dateUtil";
+import { dateUtil, daysAgo, formatToDate, today } from "@/utils/dateUtil";
 
 const roomDateList = ref<{ date: string; amount: number }[]>([]);
-const isMorning = ref(true);
-function changeisMorning(val: boolean) {
-  isMorning.value = val;
+const range = ref(1);
+function changeRange(val: number) {
+  range.value = val;
 }
 function dateBottom(date) {
   if (roomDateList.value?.length === 0) return 0;
   const today = `${date.year}-${date.month}-${date.day}`;
+  console.log([today]);
+  
   if (
     dateUtil(today).isAfter(calendarRange.endDate) ||
     dateUtil(today).isBefore(calendarRange.startDate)
   )
     return "";
-  const t = roomDateList.value!.find((d) => d.date === today);
+  const t = roomDateList.value!.find((d) => d.date === formatToDate(today));
   return t?.amount || 0;
 }
 
@@ -119,7 +133,7 @@ async function saveDate() {
     roomId: roomInfo.id,
     amount: curDateAmount.value,
     date: curDate.value,
-    morning: Number(isMorning.value),
+    range: range.value,
   });
   showBottom.value = false;
   showToast({
@@ -146,7 +160,7 @@ const roomInfo = reactive<roomInfo>({
 async function add7Days() {
   const res = await addRoomDateList({
     roomId: roomInfo.id,
-    morning: Number(isMorning.value),
+    range: range.value,
     startDate: today(),
     endDate: daysAgo(-7),
   });
@@ -169,10 +183,14 @@ async function delCurRoom() {
   navigateBack();
 }
 
+watch(range,()=>{
+  updateList()
+})
+
 async function updateList() {
   roomDateList.value = await getRoomDateList({
     roomId: roomInfo.id,
-    morning: Number(isMorning.value),
+    range: range.value,
     ...calendarRange,
   });
 }
@@ -208,13 +226,17 @@ onMounted(async () => {
 }
 
 .cell-picker {
+  margin-top: 10px;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  gap: 2%;
-  height: 40px;
+  flex-wrap: wrap;
+  gap: 8px;
+  height: auto;
+  padding: 4px;
   text-align: center;
+  @apply bg-gray-200;
 }
 .cell-btn {
   background-color: #fff;

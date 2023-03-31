@@ -1,5 +1,5 @@
 <template>
-  <view class="h-100vh w-full">
+  <view class="h-100vh w-full bg-[#eee]">
     <view class="mine-bg-pic w-full h-200px">
       <view
         class="flex items-center gap-6 p-4 absolute z-9 top-0 h-full left-0 w-full"
@@ -16,9 +16,12 @@
         </view>
       </view>
     </view>
-    <view class="flex flex-col justify-center pt-4">
-      <nut-button class="w-9/10" @tap="toAdmin">管理员功能</nut-button>
-      <nut-button class="w-9/10" @tap="clear">清除缓存</nut-button>
+    <view class="w-full p-4 bg-white mt-4">
+      预约记录
+    </view>
+    <view class="flex justify-center gap-2 p-4">
+      <nut-button class="w-1/3" @tap="toAdmin">管理员</nut-button>
+      <nut-button class="w-1/3" @tap="clear">清除缓存</nut-button>
     </view>
   </view>
 </template>

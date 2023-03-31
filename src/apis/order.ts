@@ -7,7 +7,7 @@ export async function getMyOrderList() {
   return list;
 }
 
-export async function addOrder(data:{date:string,roomId:number,morning:number}) {
+export async function addOrder(data:{date:string,roomId:number,range:number}) {
   const order = await defHttp.post<singleOrder>({
     url: "/order/add",
     data

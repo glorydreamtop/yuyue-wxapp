@@ -40,22 +40,22 @@ import { ref, PropType } from "vue";
 
 const props = defineProps<{
   list: Array<singleRoom>;
-  morning: boolean;
+  range: number;
   date: string;
 }>();
 const emit = defineEmits(["refresh"]);
-async function createOrder(roomId:number) {
+async function createOrder(roomId: number) {
   await addOrder({
     roomId,
-    morning: Number(props.morning),
-    date:formatToDate(props.date)
+    range: props.range,
+    date: formatToDate(props.date),
   });
   Taro.showToast({
     title: "预约成功",
     icon: "success",
     duration: 2000,
   });
-  emit('refresh')
+  emit("refresh");
 }
 </script>
 

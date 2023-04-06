@@ -28,6 +28,18 @@ export async function getRoomDateList(data: {
   return list;
 }
 
+export async function getRoomDateInfo(data: {
+  roomId: number;
+  range: number;
+  date:string;
+}) {
+  const list = await defHttp.get<singleRoom>({
+    url: "/room/roomDateInfo",
+    data,
+  });
+  return list;
+}
+
 export async function addRoomDateList(data: {
   roomId: number;
   startDate: string;

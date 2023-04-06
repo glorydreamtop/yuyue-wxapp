@@ -61,6 +61,7 @@
       <nut-button
         class="mx-auto mt-8 w-9/10"
         block
+        shape="square"
         type="primary"
         @tap="saveRoom"
       >

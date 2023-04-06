@@ -22,7 +22,7 @@
           size="mini"
           type="primary"
           shape="square"
-          >预约1</nut-button
+          >预约</nut-button
         >
       </view>
     </template>

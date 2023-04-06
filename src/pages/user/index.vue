@@ -20,7 +20,7 @@
         <nut-radio :label="0">女</nut-radio>
       </nut-radiogroup>
     </view> -->
-    <nut-button class="mx-4 mt-10" type="primary" @tap="saveUserInfo">{{
+    <nut-button class="mx-4 mt-10" shape="square" type="primary" @tap="saveUserInfo">{{
       loginState ? "保存" : "注册"
     }}</nut-button>
   </view>

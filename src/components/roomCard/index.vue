@@ -2,7 +2,7 @@
   <nut-list :height="80" :listData="props.list">
     <template v-slot="{ item }">
       <view
-        class="room-card p-2 shadow-warm-gray-200 shadow grid grid-cols-[auto,auto] grid-rows-2 gap-1 items-center"
+        class="room-card p-2 shadow-md shadow grid grid-cols-[auto,auto] grid-rows-2 gap-1 items-center"
       >
         <view
           class="row-span-1 col-span-2 text-left text-xl font-bold text-primary"
@@ -20,12 +20,13 @@
           </text>
         </view>
         <nut-button
-          class="row-span-1 col-span-1 w-16 justify-self-end rounded"
+          class="row-span-1 col-span-1 w-20 justify-self-end rounded"
           size="mini"
           type="primary"
           shape="square"
-          @tap="createOrder(item.id)"
-          >预约</nut-button
+          :disabled="item.available===0"
+          @tap="toOrder(item)"
+          >{{ item.available===0?'预约已满':'预约' }}</nut-button
         >
       </view>
     </template>
@@ -33,29 +34,24 @@
 </template>
 
 <script lang="ts" setup>
-import { addOrder } from "@/apis/order";
-import { formatToDate } from "@/utils/dateUtil";
-import Taro from "@tarojs/taro";
-import { ref, PropType } from "vue";
+import { navigateTo,showToast } from "@tarojs/taro";
 
 const props = defineProps<{
   list: Array<singleRoom>;
   range: number;
   date: string;
 }>();
-const emit = defineEmits(["refresh"]);
-async function createOrder(roomId: number) {
-  await addOrder({
-    roomId,
-    range: props.range,
-    date: formatToDate(props.date),
+
+function toOrder(item:singleRoom) {
+  if(item.available===0){
+    showToast({
+      title:'没位置了'
+    })
+    return;
+  }
+  navigateTo({
+    url: `/pages/order/index?id=${item.id}&range=${props.range}&date=${props.date}`,
   });
-  Taro.showToast({
-    title: "预约成功",
-    icon: "success",
-    duration: 2000,
-  });
-  emit("refresh");
 }
 </script>
 

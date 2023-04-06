@@ -1,8 +1,8 @@
 <template>
-  <view class="h-100vh w-full bg-[#eee]">
-    <view class="mine-bg-pic w-full h-200px">
+  <view class="h-100vh w-full bg-[#f6f6f6]">
+    <view class="mine-bg-pic w-full h-260px">
       <view
-        class="flex items-center gap-6 p-4 absolute z-9 top-0 h-full left-0 w-full"
+        class="flex items-center gap-6 p-4 absolute z-9 top-10 h-full left-0 w-full"
       >
         <image :src="userInfo.avatar" class="w-25 h-25 rounded-1"></image>
         <view v-if="loginState" class="text-light-900 flex gap-2 flex-col">
@@ -16,12 +16,14 @@
         </view>
       </view>
     </view>
-    <view class="w-full p-4 bg-white mt-4">
+    <view class="w-full p-4 pl-6 bg-white mt-4" @tap="toOrder">
       预约记录
     </view>
-    <view class="flex justify-center gap-2 p-4">
-      <nut-button class="w-1/3" @tap="toAdmin">管理员</nut-button>
-      <nut-button class="w-1/3" @tap="clear">清除缓存</nut-button>
+    <view class="w-full p-4 pl-6 bg-white mt-2" @tap="toAdmin">
+      管理员功能
+    </view>
+    <view class="w-full p-4 pl-6 bg-white text-red-600 mt-2" @tap="clear">
+      退出登录
     </view>
   </view>
 </template>
@@ -30,7 +32,6 @@
 import Taro, { eventCenter, getCurrentInstance } from "@tarojs/taro";
 import { computed, onMounted, ref } from "vue";
 import { useMainStore } from "@/store/index";
-import { decryptWxUserInfo } from "@/apis/user";
 
 const mainStore = useMainStore();
 const loginState = computed(() => {
@@ -68,11 +69,20 @@ function toAdmin() {
     url: "/pages/admin/index",
   });
 }
+function toOrder() {
+  Taro.navigateTo({
+    url: "/pages/myorder/index",
+  });
+}
+
 
 function clear() {
   Taro.clearStorageSync();
+  mainStore.setLoginState(false);
+  mainStore.setToken("");
+  mainStore.setUserInfo({});
   Taro.showToast({
-    title: "清除成功",
+    title: "已退出",
   });
 }
 </script>

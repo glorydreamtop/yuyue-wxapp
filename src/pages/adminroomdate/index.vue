@@ -9,25 +9,25 @@
         :class="['cell-btn', range === 1 ? 'select' : '']"
         @tap="changeRange(1)"
       >
-        7:30-9:30
+        {{ rangeSet[1] }}
       </view>
       <view
         :class="['cell-btn', range === 2 ? 'select' : '']"
         @tap="changeRange(2)"
       >
-        10:00-12:00
+      {{ rangeSet[2] }}
       </view>
       <view
         :class="['cell-btn', range === 3 ? 'select' : '']"
         @tap="changeRange(3)"
       >
-        14:00-16:00
+      {{ rangeSet[3] }}
       </view>
       <view
         :class="['cell-btn', range === 4 ? 'select' : '']"
         @tap="changeRange(4)"
       >
-        16:30-18:30
+      {{ rangeSet[4] }}
       </view>
     </view>
     <view class="px-4 pb-4">
@@ -50,10 +50,10 @@
           }}</span>
         </template>
       </nut-calendar>
-      <nut-button type="primary" block class="mx-auto" @tap="add7Days"
+      <nut-button type="primary" shape="square" block class="mx-auto" @tap="add7Days"
         >一键添加最近七个日期全可用</nut-button
       >
-      <nut-button type="danger" block class="mx-auto mt-2" @tap="delCurRoom"
+      <nut-button type="danger" shape="square" block class="mx-auto mt-2" @tap="delCurRoom"
         >删除房间</nut-button
       >
     </view>
@@ -95,6 +95,7 @@ import {
   updateRoomDate,
 } from "@/apis/room";
 import { dateUtil, daysAgo, formatToDate, today } from "@/utils/dateUtil";
+import { rangeSet } from "@/utils/helper";
 
 const roomDateList = ref<{ date: string; amount: number }[]>([]);
 const range = ref(1);

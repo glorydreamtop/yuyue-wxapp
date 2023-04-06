@@ -1,11 +1,8 @@
 <template>
   <view class="index">
     <nut-swiper :init-page="swiperIndex" :loop="false">
-      <nut-swiper-item>
-        <img src="https://imgs.zixinco.com/20221207/e930d78e2c904.png" alt="" />
-      </nut-swiper-item>
-      <nut-swiper-item>
-        <img src="https://imgs.zixinco.com/20221207/99c9e53e089ac.png" alt="" />
+      <nut-swiper-item v-for="a in articleList">
+        <img @tap="toArticle(a.id)" :src="a.pic" />
       </nut-swiper-item>
     </nut-swiper>
     <nut-cell>
@@ -32,25 +29,25 @@
         :class="['cell-btn', range === 1 ? 'select' : '']"
         @tap="changeRange(1)"
       >
-        7:30-9:30
+        {{ rangeSet[1] }}
       </view>
       <view
         :class="['cell-btn', range === 2 ? 'select' : '']"
         @tap="changeRange(2)"
       >
-        10:00-12:00
+        {{ rangeSet[2] }}
       </view>
       <view
         :class="['cell-btn', range === 3 ? 'select' : '']"
         @tap="changeRange(3)"
       >
-        14:00-16:00
+        {{ rangeSet[3] }}
       </view>
       <view
         :class="['cell-btn', range === 4 ? 'select' : '']"
         @tap="changeRange(4)"
       >
-        16:30-18:30
+        {{ rangeSet[4] }}
       </view>
     </view>
     <nut-calendar
@@ -84,8 +81,8 @@
           />
         </nut-infiniteloading>
         <view class="h-60 flex justify-center items-center" v-else>
-          <text>
-            点击刷新
+          <text @tap="refresh">
+            {{ loading?'加载中...':'点击刷新' }}
           </text>
         </view>
       </nut-tabpane>
@@ -98,8 +95,10 @@ import { onMounted, reactive, ref, watch } from "vue";
 import Room from "@/components/roomCard/index.vue";
 import { formatToDate, today, daysAgo } from "@/utils/dateUtil";
 import { getRoomList, getBuildingList } from "@/apis/room";
-import { getCurrentInstance, eventCenter } from "@tarojs/taro";
+import { getCurrentInstance, eventCenter ,navigateTo} from "@tarojs/taro";
 import { useMainStore } from "@/store";
+import { rangeSet } from "@/utils/helper";
+import { getArticleListApi } from "@/apis/article";
 const swiperIndex = ref(0);
 const currentBuilding = ref(1);
 const buildings = ref<buildingInfo[]>([]);
@@ -110,11 +109,9 @@ const dateRange = ref([today(), daysAgo(-14)]);
 
 const range = ref(1);
 function changeRange(val: number) {
-  
-  
   range.value = val;
-  console.log(range.value);
 }
+const loading = ref(false)
 
 function openCalendar() {
   calendarVisible.value = true;
@@ -126,13 +123,18 @@ function setDate(params: string[]) {
   currentDate.value = params[3];
 }
 
-watch(()=>[currentDate,range], () => {
-  refresh();
-},{
-  deep:true
-});
+watch(
+  () => [currentDate, range],
+  () => {
+    refresh();
+  },
+  {
+    deep: true,
+  }
+);
 
 async function refresh(done?: () => void) {
+  loading.value = true;
   buildings.value = await getBuildingList();
   buildings.value.forEach(async (b) => {
     const res = await getRoomList({
@@ -142,13 +144,24 @@ async function refresh(done?: () => void) {
     });
     roomListMaps[b.name] = res;
   });
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
 
   if (done) done();
 }
 
+const articleList = ref<singleArticle[]>([]);
+
+function toArticle(id:number){
+  navigateTo({
+    url:`/pages/article/index?id=${id}`
+  })
+}
 onMounted(async () => {
   eventCenter.on(getCurrentInstance().router!.onShow, async () => {
     await refresh();
+    articleList.value = await getArticleListApi();
     useMainStore().loginState = true;
   });
 });

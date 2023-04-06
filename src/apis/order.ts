@@ -7,10 +7,25 @@ export async function getMyOrderList() {
   return list;
 }
 
-export async function addOrder(data:{date:string,roomId:number,range:number}) {
+export async function getAllOrderList() {
+  const list = await defHttp.get<singleOrder[]>({
+    url: "/order/all",
+  });
+  return list;
+}
+
+export async function addOrder(data: Partial<singleOrder>) {
   const order = await defHttp.post<singleOrder>({
     url: "/order/add",
-    data
+    data,
+  });
+  return order;
+}
+
+export async function updateOrder(data: Partial<singleOrder>) {
+  const order = await defHttp.post<singleOrder>({
+    url: "/order/update",
+    data,
   });
   return order;
 }

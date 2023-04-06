@@ -23,7 +23,7 @@
       v-model="article.content"
       placeholder="请输入正文"
     ></nut-textarea>
-    <nut-button @tap="save" type="primary">保存</nut-button>
+    <nut-button @tap="save" shape="square" type="primary">保存</nut-button>
   </view>
 </template>
 

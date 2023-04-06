@@ -9,6 +9,9 @@
     <view class="admin-item" @tap="to('adminarticlelist')">
       <text>公告管理</text>
     </view>
+    <view class="admin-item" @tap="to('orderlist')">
+      <text>预约列表</text>
+    </view>
   </view>
 </template>
 

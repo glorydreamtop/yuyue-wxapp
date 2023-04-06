@@ -1,6 +1,8 @@
 interface singleRoom {
   id: number;
   name: string;
+  building: number;
+  buildingName: string;
   amount: number;
   available: number;
 }
@@ -23,8 +25,13 @@ interface singleOrder {
   userId: string;
   date: string;
   roomId: number;
+  roomName: string;
+  buildingName:string;
   inuse: number;
   range: number;
+  count: number;
+  reason: string;
+  userName?:string;
   creatTime: string;
 }
 

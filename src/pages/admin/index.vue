@@ -1,5 +1,8 @@
 <template>
   <view class="h-100vh w-full flex flex-col items-center gap-4 pt-6">
+    <view class="admin-item" @tap="to('scan')">
+      <text>扫码签到</text>
+    </view>
     <view class="admin-item" @tap="to('adminroomlist')">
       <text>所有教室</text>
     </view>
